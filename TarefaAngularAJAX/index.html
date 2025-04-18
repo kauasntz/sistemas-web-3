@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tarefa Angular com AJAX e AJAX puro</title>
+</head>
+<body>
+    <h2>Exemplo AJAX Puro</h2>
+
+    <!-- botão para GET (carregar texto) -->
+    <button onclick="carregarTexto()">Carregar texto</button>
+    
+    <!-- botão para POST -->
+    <button onclick="enviarPost()">Enviar POST</button>
+
+    <div id="conteudo" style="margin-top: 20px; white-space: pre-wrap;"></div>
+
+    <script>
+        // chamada AJAX GET
+        function carregarTexto() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    document.getElementById("conteudo").innerText = this.responseText;
+                }
+            };
+            xhttp.open("GET", "http://192.168.0.15:8000/dados.txt", true);
+            xhttp.send();
+
+            // alternativa com fetch:
+            /*
+            fetch("http://192.168.0.15:8000/dados.txt")
+                .then(response => response.text())
+                .then(data => document.getElementById("conteudo").innerText = data)
+                .catch(error => console.error("Erro:", error));
+            */
+        }
+
+        // chamada AJAX POST
+        function enviarPost() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "http://192.168.0.15:3000/mensagem", true);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    alert("Resposta: " + this.responseText);
+                }
+            };
+            xhttp.send(JSON.stringify({ mensagem: "Olá do AJAX!" }));
+        }
+    </script>
+</body>
+</html>
