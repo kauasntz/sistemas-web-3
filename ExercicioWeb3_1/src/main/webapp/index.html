@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Consulta de Dados</title>
+</head>
+<body>
+  <h2>Meus Dados</h2>
+  <button onclick="buscarDados()">Buscar Dados</button>
+  <div id="resultado" style="margin-top:20px;"></div>
+
+  <script>
+    function buscarDados() {
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.innerHTML = "Consultando... Aguarde 30 segundos.";
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "dados", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          const dados = JSON.parse(xhr.responseText);
+          resultadoDiv.innerHTML = `
+            <p><strong>Nome:</strong> ${dados.nome}</p>
+            <p><strong>CPF:</strong> ${dados.cpf}</p>
+            <p><strong>Matrícula:</strong> ${dados.matricula}</p>
+          `;
+        }
+      };
+      xhr.send();
+    }
+  </script>
+</body>
+</html>
